@@ -1,6 +1,6 @@
-(defproject org.clojars.tropicalmug/summarizer "0.1.0-SNAPSHOT"
+(defproject teaser-clj "0.1.0-SNAPSHOT"
   :description "Summarize urls."
-  :url "https://clojars.org/org.clojars.tropicalmug/summarizer"
+  :url "https://clojars.org/teaser-clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[enlive "1.1.5"]

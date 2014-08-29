@@ -1,4 +1,4 @@
-(ns summarizer.core
+(ns teaser-clj.core
   (:require [net.cgrand.enlive-html :as html]
             [clojure.data.priority-map :refer [priority-map]]
             [clojure.math.numeric-tower :refer [expt]]
@@ -23,6 +23,20 @@
   "Takes a string and returns a coll of the words."
   [s]
   (split s #"\s+"))
+
+(defn words-from-html
+  "Returns the words from enlive html."
+  [html]
+  (try
+    (let [chunks (-> html
+                     (html/at [:script] nil)
+                     (html/at [:style] nil)
+                     (html/select [:body html/text-node]))]
+      (->> chunks
+           (mapcat (partial re-seq #"\w+"))
+           (remove (partial re-matches #"\d+"))
+           (map lower-case)))
+    (catch IllegalArgumentException e)))
 
 (defn sentences-from-html
   "Returns the sentences from enlive html."
