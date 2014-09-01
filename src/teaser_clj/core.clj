@@ -47,7 +47,6 @@
                      (html/at [:style] nil)
                      (html/select [:body html/text-node]))]
       (->> chunks
-           (map lower-case)
            (mapcat #(split % #"(?<=[.!?])\s+(?=\p{Lt})"))))
     (catch IllegalArgumentException e)))
 
@@ -162,7 +161,7 @@
                  (/ 2)
                  (* 10))
           fs (final-score ts fq ls ps)]
-      [s fs])))
+      [idx fs])))
 
 (defn score-sentences
   [sentences keyword-map wordcount titlewords]
@@ -170,6 +169,11 @@
     (into [] (map-indexed
               (fn [idx itm] (score itm idx keyword-map wordcount titlewords length))
               sentences))))
+
+(defn get-sentences
+  [sentences indices]
+  (for [i indices]
+    (nth sentences i)))
 
 (defn process-html
   "Returns a map with the title, words, and sentences
@@ -184,15 +188,17 @@
   "Returns a five-sentence (max) summary of the given url."
   [url]
   (let [{:keys [title words sentences]}  (process-html url)
+        lowercase                        (map lower-case sentences)
         startmap                         (frequencies words)
         wordcount                        (count startmap)
         wordmap                          (filter-stopwords-wordmap startmap)
         keyword-map                      (top-x 10 wordmap)]
     (->> (filter-stopwords-string title)
-         (score-sentences sentences keyword-map wordcount)
+         (score-sentences lowercase keyword-map wordcount)
          (top-x 5)
          (keys)
-         (join \newline))))
+         (get-sentences sentences)
+         (join "  "))))
 
 (def stopwords
   #{"-" " " "|" "," "." "a" "e" "i" "o" "u" "t" "about" "above"

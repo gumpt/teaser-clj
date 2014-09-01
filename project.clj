@@ -1,4 +1,4 @@
-(defproject teaser-clj "0.1.0-SNAPSHOT"
+(defproject teaser-clj "0.2.0"
   :description "Summarize urls."
   :url "https://clojars.org/teaser-clj"
   :license {:name "Eclipse Public License"
