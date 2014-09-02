@@ -1,54 +1,15 @@
 (ns teaser-clj.core
-  (:require [net.cgrand.enlive-html :as html]
+  (:require [teaser-clj.html :refer :all]
             [clojure.data.priority-map :refer [priority-map]]
             [clojure.math.numeric-tower :refer [expt]]
             [clojure.java.io :refer [as-url]]
             [clojure.set :refer [union intersection]]
             [clojure.string :refer [join split lower-case]]))
 
-; HTML processing
-(defn title-from-html
-  "Returns the title from enlive html."
-  [html]
-  (try
-    (first (map lower-case (html/select html [:title html/text-node])))
-    (catch IllegalArgumentException e)))
-
-(defn fetch-url
-  "Grabs a given URI and returns enlive html of the page."
-  [url]
-  (html/html-resource (as-url url)))
-
 (defn get-words
   "Takes a string and returns a coll of the words."
   [s]
   (split s #"\s+"))
-
-(defn words-from-html
-  "Returns the words from enlive html."
-  [html]
-  (try
-    (let [chunks (-> html
-                     (html/at [:script] nil)
-                     (html/at [:style] nil)
-                     (html/select [:body html/text-node]))]
-      (->> chunks
-           (mapcat (partial re-seq #"\w+"))
-           (remove (partial re-matches #"\d+"))
-           (map lower-case)))
-    (catch IllegalArgumentException e)))
-
-(defn sentences-from-html
-  "Returns the sentences from enlive html."
-  [html]
-  (try
-    (let [chunks (-> html
-                     (html/at [:script] nil)
-                     (html/at [:style] nil)
-                     (html/select [:body html/text-node]))]
-      (->> chunks
-           (mapcat #(split % #"(?<=[.!?])\s+(?=\p{Lt})"))))
-    (catch IllegalArgumentException e)))
 
 ; Stopwords
 (declare stopwords)
