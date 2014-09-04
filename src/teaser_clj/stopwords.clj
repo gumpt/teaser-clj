@@ -1,7 +1,12 @@
 (ns teaser-clj.stopwords
-  :require [])
+  (:require [clojure.string :refer [split]]))
 
 (declare stopwords)
+
+(defn get-words
+  "Takes a string and returns a coll of the words."
+  [s]
+  (split s #"\s+"))
 
 (defn filter-stopwords-wordmap
   [wordmap]

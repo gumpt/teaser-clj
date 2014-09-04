@@ -1,5 +1,7 @@
 (ns teaser-clj.html
-  :require [[net.cgrand.enlive-html :as html]])
+  (:require [net.cgrand.enlive-html :as html]
+            [clojure.java.io :refer [as-url]]
+            [clojure.string :refer [lower-case split]]))
 
 (defn title-from-html
   "Returns the title from enlive html."
@@ -36,3 +38,12 @@
       (->> chunks
            (mapcat #(split % #"(?<=[.!?])\s+(?=\p{Lt})"))))
     (catch IllegalArgumentException e)))
+
+(defn process-html
+  "Returns a map with the title, words, and sentences
+  from a given url."
+  [url]
+  (let [content (fetch-url url)]
+    {:title (title-from-html content)
+     :words (words-from-html content)
+     :sentences (sentences-from-html content)}))

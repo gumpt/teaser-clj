@@ -1,5 +1,8 @@
 (ns teaser-clj.scoring
-  :require [])
+  (:require [teaser-clj.stopwords :refer [get-words filter-stopwords-string]]
+            [clojure.data.priority-map :refer [priority-map]]
+            [clojure.math.numeric-tower :refer [expt]]
+            [clojure.set :refer [intersection]]))
 
 (defn common-elements [& colls]
   (let [freqs (map frequencies colls)]
