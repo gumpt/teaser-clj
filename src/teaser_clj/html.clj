@@ -4,9 +4,7 @@
 (defn title-from-html
   "Returns the title from enlive html."
   [html]
-  (try
-    (first (map lower-case (html/select html [:title html/text-node])))
-    (catch IllegalArgumentException e)))
+  (first (map lower-case (html/select html [:title html/text-node]))))
 
 (defn fetch-url
   "Grabs a given URI and returns enlive html of the page."
