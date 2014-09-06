@@ -2,25 +2,50 @@
   (:require [teaser-clj.html :refer [process-html]]
             [teaser-clj.scoring :refer [score-sentences top-x]]
             [teaser-clj.stopwords :refer [filter-stopwords-wordmap filter-stopwords-string]]
-            [clojure.string :refer [join lower-case]]))
+            [clojure.string :as string]))
 
-(defn get-sentences
+(defn get-from-indices
+  "Returns the values from a data structure corresponding to passed indices."
   [sentences indices]
   (for [i indices]
     (nth sentences i)))
 
-(defn summarize-url
-  "Returns a five-sentence (max) summary of the given url."
-  [url]
-  (let [{:keys [title words sentences]}  (process-html url)
-        lowercase                        (map lower-case sentences)
-        startmap                         (frequencies words)
-        wordcount                        (count startmap)
-        wordmap                          (filter-stopwords-wordmap startmap)
-        keyword-map                      (top-x 10 wordmap)]
+(defn get-words
+  "Returns a coll of all words given in the coll."
+  [coll]
+  (->> coll
+       (mapcat (partial re-seq #"\w+"))
+       (remove (partial re-matches #"\d+"))
+       (map string/lower-case)))
+
+(defn get-sentences
+  "Returns a coll of all sentences given in the coll."
+  [coll]
+  (string/split (map #(string/replace % #"(?<=[.!?])\s+(?=\p{Lt})" #"\|\|\|") coll)))
+
+(defn summarize
+  [title sentences]
+  (let [words        (get-words sentences)
+        lowercase    (map string/lower-case sentences)
+        startmap     (frequencies words)
+        wordcount    (count startmap)
+        wordmap      (filter-stopwords-wordmap startmap)
+        keyword-map  (top-x 10 wordmap)]
     (->> (filter-stopwords-string title)
          (score-sentences lowercase keyword-map wordcount)
          (top-x 5)
          (keys)
-         (get-sentences sentences)
-         (join "  "))))
+         (get-from-indices sentences)
+         (string/join "  "))))
+
+(defn summarize-url
+  "Returns a five-sentence (max) summary of the given url."
+  [url]
+  (let [{:keys [title sentences]}  (process-html url)]
+    (summarize title sentences)))
+
+(defn summarize-text
+  "Returns a five-sentence (max) summary of the given story and title."
+  [title story]
+  (let [sentences (get-sentences story)]
+    (summarize title sentences)))

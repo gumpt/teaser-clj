@@ -13,20 +13,6 @@
   [url]
   (html/html-resource (as-url url)))
 
-(defn words-from-html
-  "Returns the words from enlive html."
-  [html]
-  (try
-    (let [chunks (-> html
-                     (html/at [:script] nil)
-                     (html/at [:style] nil)
-                     (html/select [:body html/text-node]))]
-      (->> chunks
-           (mapcat (partial re-seq #"\w+"))
-           (remove (partial re-matches #"\d+"))
-           (map lower-case)))
-    (catch IllegalArgumentException e)))
-
 (defn sentences-from-html
   "Returns the sentences from enlive html."
   [html]
@@ -45,5 +31,4 @@
   [url]
   (let [content (fetch-url url)]
     {:title (title-from-html content)
-     :words (words-from-html content)
      :sentences (sentences-from-html content)}))
