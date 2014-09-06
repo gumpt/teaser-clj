@@ -20,8 +20,8 @@
 
 (defn get-sentences
   "Returns a coll of all sentences given in the coll."
-  [coll]
-  (string/split (map #(string/replace % #"(?<=[.!?])\s+(?=\p{Lt})" #"\|\|\|") coll)))
+  [text]
+  (string/split (string/replace text #"([.?!;])\s{1}" "$1|||") #"\|\|\|"))
 
 (defn summarize
   [title sentences]
