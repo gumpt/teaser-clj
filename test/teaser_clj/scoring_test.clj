@@ -14,5 +14,5 @@
 
 (deftest titlescore-test
   (testing "#'teaser-clj.html/titlescore"
-    (are [x y z] (= x (titlescore y z))
-         0.25 "this is a title" "title")))
+    (are [x y z] (== x (titlescore y z))
+         0.25 "title" ["this" "is" "a" "title"])))
