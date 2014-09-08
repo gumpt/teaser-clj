@@ -45,7 +45,8 @@
      (is-between? s 0.6 0.7) 0.06
      (is-between? s 0.7 0.8) 0.04
      (is-between? s 0.8 0.9) 0.04
-     (is-between? s 0.9 1) 0.15)))
+     (is-between? s 0.9 1) 0.15
+     :else 0)))
 
 (defn sbs
   [s keyword-map]

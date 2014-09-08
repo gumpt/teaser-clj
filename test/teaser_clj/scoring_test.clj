@@ -25,7 +25,9 @@
          0.4  "this sentence is a test sentence"
          0.35 "this sentence is a test sentence.")))
 
-(defn is-between?-test
+(deftest is-between?-test
   (testing "#'teaser-clj.scoring/is-between?"
-    (are [x a b c] (== x (is-between? a b c))
-         )))
+    (are [x a b c] (= x (is-between? a b c))
+         true  5 0 10
+         false 0 0 10
+         true 10 0 10)))
