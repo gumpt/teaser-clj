@@ -63,5 +63,6 @@
 (deftest sbs-test
   (testing "#'teaser-clj.scoring/sbs"
     (are [x y z] (== x (sbs y z))
-         0    "not in"    {"keyword" 0, "map" 0}
-         0.75 "these are" {"these" 5, "are" 10})))
+         0     "not in"    {"keyword" 0, "map" 0}
+         0.75  "these are" {"these" 5, "are" 10}
+         29/60 "this test is much more thorough" {"test" 7, "thorough" 17, "more" 5})))
