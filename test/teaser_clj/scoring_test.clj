@@ -38,3 +38,18 @@
          0 {"test" 0}    "test"
          0 {"notest" 12} "test"
          5 {"test" 5}    "test")))
+
+(deftest positionscore-test
+  (testing "#'teaser-clj.scoring/positionscore"
+    (are [x y z] (= x (positionscore y z))
+         0.17 0 10
+         0.23 1 10
+         0.14 2 10
+         0.08 3 10
+         0.05 4 10
+         0.04 5 10
+         0.06 6 10
+         0.04 7 10
+         0.04 8 10
+         0.15 9 10
+         0   10 10)))
