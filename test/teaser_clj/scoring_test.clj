@@ -28,6 +28,13 @@
 (deftest is-between?-test
   (testing "#'teaser-clj.scoring/is-between?"
     (are [x a b c] (= x (is-between? a b c))
-         true  5 0 10
          false 0 0 10
+         true  5 0 10      
          true 10 0 10)))
+
+(deftest get-keyword-score-test
+  (testing "#'teaser-clj.scoring/get-keyword-score"
+    (are [x y z] (= x (get-keyword-score y z))
+         0 {"test" 0}    "test"
+         0 {"notest" 12} "test"
+         5 {"test" 5}    "test")))
