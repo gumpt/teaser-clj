@@ -34,7 +34,7 @@
 
 (defn positionscore
   [idx length]
-  (let [s (/ (inc idx) length)]
+  (let [s (/ idx length)]
     (cond
      (is-between? s 0 0.1) 0.17
      (is-between? s 0.1 0.2) 0.23
