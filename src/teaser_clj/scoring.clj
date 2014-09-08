@@ -48,9 +48,17 @@
      (is-between? s 0.9 1) 0.15
      :else 0)))
 
+(defn sbs-sub
+  [words keyword-map]
+  (for  [w words]
+    (get-keyword-score keyword-map w)))
+
 (defn sbs
   [s keyword-map]
-  (/ (* (/ 1 (count s)) (count (common-elements s keyword-map))) 10))
+  (if (= 0 (count (get-words s)))
+    0
+    (let [subscore (apply + (sbs-sub (get-words s) keyword-map))]
+      (/ (* (/ 1 (count (get-words s))) subscore) 10))))
 
 (def f (atom []))
 (def t (atom []))

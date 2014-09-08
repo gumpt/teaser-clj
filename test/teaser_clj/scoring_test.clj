@@ -29,7 +29,7 @@
   (testing "#'teaser-clj.scoring/is-between?"
     (are [x a b c] (= x (is-between? a b c))
          false 0 0 10
-         true  5 0 10      
+         true  5 0 10
          true 10 0 10)))
 
 (deftest get-keyword-score-test
@@ -53,3 +53,15 @@
          0.04 8 10
          0.04 9 10
          0.15 10 10)))
+
+(deftest sbs-sub-test
+  (testing "#'teaser-clj.scoring/sbs-sub"
+    (are [x y z] (= x (sbs-sub y z))
+         [0 0]  ["not" "in"]    {"keyword" 0, "map" 0}
+         [5 10] ["these" "are"] {"these" 5, "are" 10})))
+
+(deftest sbs-test
+  (testing "#'teaser-clj.scoring/sbs"
+    (are [x y z] (== x (sbs y z))
+         0    "not in"    {"keyword" 0, "map" 0}
+         0.75 "these are" {"these" 5, "are" 10})))
