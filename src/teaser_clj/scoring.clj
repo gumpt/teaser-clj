@@ -20,9 +20,9 @@
 
 (defn lengthscore
   [w]
-  (/ (- 1 (Math/abs (- 20 (count w)))) 20))
+  (- 1 (/ (Math/abs (- 20 (count w))) 20)))
 
-(defn is-between
+(defn is-between?
   [x a b]
   (and (<= x b) (> x a)))
 
@@ -36,16 +36,16 @@
   [idx length]
   (let [s (/ (inc idx) length)]
     (cond
-     (is-between s 0 0.1) 0.17
-     (is-between s 0.1 0.2) 0.23
-     (is-between s 0.2 0.3) 0.14
-     (is-between s 0.3 0.4) 0.08
-     (is-between s 0.4 0.5) 0.05
-     (is-between s 0.5 0.6) 0.04
-     (is-between s 0.6 0.7) 0.06
-     (is-between s 0.7 0.8) 0.04
-     (is-between s 0.8 0.9) 0.04
-     (is-between s 0.9 1) 0.15)))
+     (is-between? s 0 0.1) 0.17
+     (is-between? s 0.1 0.2) 0.23
+     (is-between? s 0.2 0.3) 0.14
+     (is-between? s 0.3 0.4) 0.08
+     (is-between? s 0.4 0.5) 0.05
+     (is-between? s 0.5 0.6) 0.04
+     (is-between? s 0.6 0.7) 0.06
+     (is-between? s 0.7 0.8) 0.04
+     (is-between? s 0.8 0.9) 0.04
+     (is-between? s 0.9 1) 0.15)))
 
 (defn sbs
   [s keyword-map]

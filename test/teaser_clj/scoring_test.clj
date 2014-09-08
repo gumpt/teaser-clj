@@ -14,5 +14,14 @@
 
 (deftest titlescore-test
   (testing "#'teaser-clj.html/titlescore"
-    (are [x y z] (== x (titlescore y z))
-         0.25 "title" ["this" "is" "a" "title"])))
+    (are [x y z] (= x (titlescore y z))
+         1/4 "title" ["this" "is" "a" "title"]
+         1/3 "test"  ["this" "test" "bad"])))
+
+(deftest lengthscore-test
+  (testing "#'teaser-clj.html/lengthscore"
+    (are [x y] (== x (lengthscore y))
+         0.85 "this is a test sentence"
+         0.4  "this sentence is a test sentence"
+         0.35 "this sentence is a test sentence.")))
+
