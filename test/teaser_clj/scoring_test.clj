@@ -75,3 +75,12 @@
          0    "not in"           {"keyword" 0, "map" 0}
          25/6 "these are"        {"these" 5, "are" 10}
          30   "these are better" {"these" 5, "are" 10, "better" 55})))
+
+(deftest final-score-test
+  (testing "#'teaser-clj.scoring/final-score"
+    (are [x t f l p] (== x (final-score t f l p))
+         0     0 0 0 0
+         0.375 1 0 0 0
+         0.5   0 1 0 0
+         0.25  0 0 1 0
+         0.25  0 0 0 1)))
