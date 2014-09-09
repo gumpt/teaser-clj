@@ -69,9 +69,9 @@
   (reset! r 0)
   (if-let [sa (not-empty (get-words sentence))]
     (do
-      (doseq [s sa
-              i (range (count sa))
-              :let [score (get-keyword-score keyword-map s)]]
+      (doseq [i (range (count sa))
+              :let [s (nth sa i)
+                    score (get-keyword-score keyword-map s)]]
         (if (= 0 i)
           (reset! f (vector i score))
           (do
