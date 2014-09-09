@@ -58,7 +58,9 @@
   (testing "#'teaser-clj.scoring/sbs-sub"
     (are [x y z] (= x (sbs-sub y z))
          [0 0]  ["not" "in"]    {"keyword" 0, "map" 0}
-         [5 10] ["these" "are"] {"these" 5, "are" 10})))
+         [5 10] ["these" "are"] {"these" 5, "are" 10}
+         [0 7 0 0 5 17] ["this" "test" "is" "much" "more" "thorough"]
+                        {"test" 7, "thorough" 17, "more" 5})))
 
 (deftest sbs-test
   (testing "#'teaser-clj.scoring/sbs"
