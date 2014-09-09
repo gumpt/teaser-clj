@@ -80,8 +80,7 @@
             (let [d (- (first @t) (first @f))]
               (swap! r + (-> (second @t)
                              (* (second @f))
-                             (/ (expt d 2))))
-              ))))
+                             (/ (expt d 2))))))))
       (let [k (+ 1 (count (common-elements (keys keyword-map) sa)))]
         (* (/ 1 (* k (+ k 1))) @r)))
     @r))
