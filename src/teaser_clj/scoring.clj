@@ -1,5 +1,5 @@
 (ns teaser-clj.scoring
-  (:require [teaser-clj.stopwords :refer [get-words filter-stopwords-string]]
+  (:require [teaser-clj.stopwords :refer [split-sentence filter-stopwords-string]]
             [clojure.data.priority-map :refer [priority-map]]
             [clojure.math.numeric-tower :refer [expt]]
             [clojure.set :refer [intersection]]))
@@ -55,10 +55,10 @@
 
 (defn sbs
   [s keyword-map]
-  (if (= 0 (count (get-words s)))
+  (if (= 0 (count (split-sentence s)))
     0
-    (let [subscore (apply + (sbs-sub (get-words s) keyword-map))]
-      (/ (* (/ 1 (count (get-words s))) subscore) 10))))
+    (let [subscore (apply + (sbs-sub (split-sentence s) keyword-map))]
+      (/ (* (/ 1 (count (split-sentence s))) subscore) 10))))
 
 (def f (atom []))
 (def t (atom []))
@@ -67,7 +67,7 @@
 (defn dbs
   [sentence keyword-map]
   (reset! r 0)
-  (if-let [sa (not-empty (get-words sentence))]
+  (if-let [sa (not-empty (split-sentence sentence))]
     (do
       (doseq [i (range (count sa))
               :let [s (nth sa i)
@@ -95,7 +95,7 @@
 
 (defn score
   [s idx keyword-map wordcount titlewords length]
-  (let [w  (get-words s)
+  (let [w  (split-sentence s)
         ts (titlescore s titlewords)
         ls (lengthscore s)
         ps (positionscore idx length)

@@ -5,7 +5,7 @@
 
 (declare stopwords)
 
-(defn get-words
+(defn split-sentence
   "Takes a string and returns a coll of the words."
   [s]
   (split s #"\s+"))
@@ -20,7 +20,7 @@
 
 (defn filter-stopwords-string
   [string]
-  (->> (get-words string)
+  (->> (split-sentence string)
        (remove stopwords)))
 
 (def stopwords

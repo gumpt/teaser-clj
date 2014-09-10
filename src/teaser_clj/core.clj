@@ -31,6 +31,7 @@
         wordcount    (count startmap)
         wordmap      (filter-stopwords-wordmap startmap)
         keyword-map  (top-x 10 wordmap)]
+    (prn keyword-map)
     (->> (filter-stopwords-string title)
          (score-sentences lowercase keyword-map wordcount)
          (top-x 5)
