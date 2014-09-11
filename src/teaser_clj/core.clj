@@ -1,6 +1,6 @@
 (ns teaser-clj.core
   (:require [teaser-clj.html :refer [process-html]]
-            [teaser-clj.scoring :refer [score-sentences top-x]]
+            [teaser-clj.scoring :refer [score-sentences top-x normalize]]
             [teaser-clj.stopwords :refer [filter-stopwords-wordmap filter-stopwords-string]]
             [clojure.string :as string]))
 
@@ -25,12 +25,14 @@
 
 (defn summarize
   [title sentences]
+  (prn sentences)
   (let [words        (get-words sentences)
         lowercase    (map string/lower-case sentences)
         startmap     (frequencies words)
         wordcount    (count startmap)
-        wordmap      (filter-stopwords-wordmap startmap)
-        keyword-map  (top-x 10 wordmap)]
+        keyword-map  (->> (filter-stopwords-wordmap startmap)
+                          (top-x 10)
+                          (normalize wordcount))]
     (prn keyword-map)
     (->> (filter-stopwords-string title)
          (score-sentences lowercase keyword-map wordcount)

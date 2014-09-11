@@ -13,6 +13,17 @@
   [x m]
   (into {} (take x (rseq (into (priority-map) m)))))
 
+(defn normalizer
+  [c x]
+  (->> (/ x c)
+       (* 1.5)
+       (+ 1)))
+
+(defn normalize
+  [c keywords]
+  (->> (map #(normalizer c %) (vals keywords))
+       (zipmap (keys keywords))))
+
 (defn titlescore
   [s t]
   (let [words (filter-stopwords-string s)]
