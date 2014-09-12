@@ -1,5 +1,6 @@
 (ns teaser-clj.html
-  (:require [net.cgrand.enlive-html :as html]
+  (:require [teaser-clj.parsing :as parsing]
+            [net.cgrand.enlive-html :as html]
             [clojure.java.io :refer [as-url]]
             [clojure.string :refer [lower-case split]]))
 
@@ -21,8 +22,7 @@
                      (html/at [:script] nil)
                      (html/at [:style] nil)
                      (html/select [:body html/text-node]))]
-      (->> chunks
-           (mapcat #(split % #"(?<=[.!?])\s+(?=\p{Lt})"))))
+           (mapcat parsing/get-sentences chunks))
     (catch IllegalArgumentException e)))
 
 (defn process-html

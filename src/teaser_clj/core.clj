@@ -1,5 +1,6 @@
 (ns teaser-clj.core
   (:require [teaser-clj.html :refer [process-html]]
+            [teaser-clj.parsing :as parsing]
             [teaser-clj.scoring :refer [score-sentences top-x normalize]]
             [teaser-clj.stopwords :refer [filter-stopwords-wordmap filter-stopwords-string]]
             [clojure.string :as string]))
@@ -50,5 +51,5 @@
 (defn summarize-text
   "Returns a five-sentence (max) summary of the given story and title."
   [title story]
-  (let [sentences (get-sentences story)]
+  (let [sentences (parsing/get-sentences story)]
     (summarize title sentences)))
