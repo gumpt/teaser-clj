@@ -2,7 +2,9 @@
   (:require [teaser-clj.html :refer [process-html]]
             [teaser-clj.parsing :as parsing]
             [teaser-clj.scoring :refer [score-sentences top-x normalize]]
-            [teaser-clj.stopwords :refer [filter-stopwords-wordmap filter-stopwords-string]]
+            [teaser-clj.stopwords :refer [filter-stopwords-string
+                                          filter-stopwords-wordmap
+                                          filter-symbols]]
             [clojure.string :as string]))
 
 (defn get-from-indices
@@ -11,25 +13,12 @@
   (for [i indices]
     (nth sentences i)))
 
-(defn get-words
-  "Returns a coll of all words given in the coll."
-  [coll]
-  (->> coll
-       (mapcat (partial re-seq #"\w+"))
-       (remove (partial re-matches #"\d+"))
-       (map string/lower-case)))
-
-(defn get-sentences
-  "Returns a coll of all sentences given in the coll."
-  [text]
-  (string/split (string/replace text #"([.?!;])\s{1}" "$1|||") #"\|\|\|"))
-
 (defn summarize
   [title sentences]
   (prn sentences)
-  (let [words        (get-words sentences)
+  (let [words        (filter-symbols (mapcat parsing/tokenize sentences))
         lowercase    (map string/lower-case sentences)
-        startmap     (frequencies words)
+        startmap     (frequencies (map string/lower-case words))
         wordcount    (count startmap)
         keyword-map  (->> (filter-stopwords-wordmap startmap)
                           (top-x 10)
