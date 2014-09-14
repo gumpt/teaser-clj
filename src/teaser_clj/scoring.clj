@@ -1,8 +1,9 @@
 (ns teaser-clj.scoring
   (:require [teaser-clj.stopwords :refer [split-sentence filter-stopwords-string]]
             [clojure.data.priority-map :refer [priority-map]]
-            [clojure.math.numeric-tower :refer [expt]]
-            [clojure.set :refer [intersection]]))
+            [clojure.math.numeric-tower :refer [expt abs]]
+            [clojure.set :refer [intersection]]
+            [clojure.string :refer [blank?]]))
 
 (defn common-elements [& colls]
   (let [freqs (map frequencies colls)]
@@ -31,11 +32,9 @@
 
 (defn lengthscore
   [w]
-  (- 1 (/ (Math/abs (- 20 (count w))) 20)))
-
-(defn is-between?
-  [x a b]
-  (and (<= x b) (> x a)))
+  (if (blank? w)
+    0
+    (- 1 (/ (abs (- 20 (count (split-sentence w)))) 20))))
 
 (defn get-keyword-score
   [keyword-map x]
@@ -47,16 +46,17 @@
   [idx length]
   (let [s (/ idx length)]
     (cond
-     (is-between? s 0 0.1) 0.17
-     (is-between? s 0.1 0.2) 0.23
-     (is-between? s 0.2 0.3) 0.14
-     (is-between? s 0.3 0.4) 0.08
-     (is-between? s 0.4 0.5) 0.05
-     (is-between? s 0.5 0.6) 0.04
-     (is-between? s 0.6 0.7) 0.06
-     (is-between? s 0.7 0.8) 0.04
-     (is-between? s 0.8 0.9) 0.04
-     (is-between? s 0.9 1) 0.15
+     (> s 1.0) 0
+     (> s 0.9) 0.15
+     (> s 0.8) 0.04
+     (> s 0.7) 0.04
+     (> s 0.6) 0.06
+     (> s 0.5) 0.04
+     (> s 0.4) 0.05
+     (> s 0.3) 0.08
+     (> s 0.2) 0.14
+     (> s 0.1) 0.23
+     (> s 0.0) 0.17
      :else 0)))
 
 (defn sbs-sub

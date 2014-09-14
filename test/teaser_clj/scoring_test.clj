@@ -21,16 +21,9 @@
 (deftest lengthscore-test
   (testing "#'teaser-clj.scoring/lengthscore"
     (are [x y] (== x (lengthscore y))
-         0.85 "this is a test sentence"
-         0.4  "this sentence is a test sentence"
-         0.35 "this sentence is a test sentence.")))
-
-(deftest is-between?-test
-  (testing "#'teaser-clj.scoring/is-between?"
-    (are [x a b c] (= x (is-between? a b c))
-         false 0 0 10
-         true  5 0 10
-         true 10 0 10)))
+         0 ""
+         0.25  "this sentence is a test"
+         1 "this sentence is a test sentence with twenty words so that its score will be exactly one and not more")))
 
 (deftest get-keyword-score-test
   (testing "#'teaser-clj.scoring/get-keyword-score"

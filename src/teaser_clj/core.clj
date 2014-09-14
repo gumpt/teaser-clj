@@ -15,7 +15,6 @@
 
 (defn summarize
   [title sentences]
-  (prn sentences)
   (let [words        (filter-symbols (mapcat parsing/tokenize sentences))
         lowercase    (map string/lower-case sentences)
         startmap     (frequencies (map string/lower-case words))
@@ -23,7 +22,6 @@
         keyword-map  (->> (filter-stopwords-wordmap startmap)
                           (top-x 10)
                           (normalize wordcount))]
-    (prn keyword-map)
     (->> (filter-stopwords-string title)
          (score-sentences lowercase keyword-map wordcount)
          (top-x 5)
