@@ -1,5 +1,6 @@
 (ns teaser-clj.scoring-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.string :refer [join]]
+            [clojure.test :refer :all]
             [teaser-clj.scoring :refer :all]))
 
 (deftest common-elements-test
@@ -23,7 +24,8 @@
     (are [x y] (== x (lengthscore y))
          0 ""
          0.25  "this sentence is a test"
-         1 "this sentence is a test sentence with twenty words so that its score will be exactly one and not more")))
+         1 "this sentence is a test sentence with twenty words so that its score will be exactly one and not more"
+         0.25 (join " " (range 35)))))
 
 (deftest get-keyword-score-test
   (testing "#'teaser-clj.scoring/get-keyword-score"
