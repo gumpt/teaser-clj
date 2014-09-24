@@ -71,30 +71,28 @@
     (let [subscore (apply + (sbs-sub (split-sentence s) keyword-map))]
       (/ (* (/ 1 (count (split-sentence s))) subscore) 10))))
 
-(def f (atom []))
-(def t (atom []))
-(def r (atom 0))
-
 (defn dbs
   [sentence keyword-map]
-  (reset! r 0)
-  (if-let [sa (not-empty (split-sentence sentence))]
-    (do
-      (doseq [i (range (count sa))
-              :let [s (nth sa i)
-                    score (get-keyword-score keyword-map s)]]
-        (if (= 0 i)
-          (reset! f (vector i score))
-          (do
-            (reset! t @f)
-            (reset! f [i score])
-            (let [d (- (first @t) (first @f))]
-              (swap! r + (-> (second @t)
-                             (* (second @f))
-                             (/ (expt d 2))))))))
-      (let [k (+ 1 (count (common-elements (keys keyword-map) sa)))]
-        (* (/ 1 (* k (+ k 1))) @r)))
-    @r))
+  (let [f (atom [])
+        t (atom [])
+        r (atom 0)]
+    (if-let [sa (not-empty (split-sentence sentence))]
+      (do
+        (doseq [i (range (count sa))
+                :let [s (nth sa i)
+                      score (get-keyword-score keyword-map s)]]
+          (if (= 0 i)
+            (reset! f (vector i score))
+            (do
+              (reset! t @f)
+              (reset! f [i score])
+              (let [d (- (first @t) (first @f))]
+                (swap! r + (-> (second @t)
+                               (* (second @f))
+                               (/ (expt d 2))))))))
+        (let [k (+ 1 (count (common-elements (keys keyword-map) sa)))]
+          (* (/ 1 (* k (+ k 1))) @r)))
+      @r)))
 
 (defn final-score
   [ts fq ls ps]
