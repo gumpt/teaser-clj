@@ -1,8 +1,9 @@
 (ns teaser-clj.html
-  (:require [teaser-clj.parsing :as parsing]
-            [net.cgrand.enlive-html :as html]
-            [clojure.java.io :refer [as-url]]
-            [clojure.string :refer [lower-case split]]))
+  (:require
+   [teaser-clj.parsing :as parsing]
+   [net.cgrand.enlive-html :as html]
+   [clojure.java.io :refer [as-url]]
+   [clojure.string :refer [lower-case split]]))
 
 (defn title-from-html
   "Returns the title from enlive html."

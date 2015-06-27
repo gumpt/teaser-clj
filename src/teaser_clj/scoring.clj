@@ -1,9 +1,10 @@
 (ns teaser-clj.scoring
-  (:require [teaser-clj.stopwords :refer [split-sentence filter-stopwords-string]]
-            [clojure.data.priority-map :refer [priority-map]]
-            [clojure.math.numeric-tower :refer [expt abs]]
-            [clojure.set :refer [intersection]]
-            [clojure.string :refer [blank?]]))
+  (:require
+   [teaser-clj.stopwords :refer [split-sentence filter-stopwords-string]]
+   [clojure.data.priority-map :refer [priority-map]]
+   [clojure.math.numeric-tower :refer [expt abs]]
+   [clojure.set :refer [intersection]]
+   [clojure.string :refer [blank?]]))
 
 (defn common-elements [& colls]
   (let [freqs (map frequencies colls)]
@@ -66,7 +67,7 @@
 
 (defn sbs
   [s keyword-map]
-  (if (= 0 (count (split-sentence s)))
+  (if (zero? (count (split-sentence s)))
     0
     (let [subscore (apply + (sbs-sub (split-sentence s) keyword-map))]
       (/ (* (/ 1 (count (split-sentence s))) subscore) 10))))
@@ -81,7 +82,7 @@
         (doseq [i (range (count sa))
                 :let [s (nth sa i)
                       score (get-keyword-score keyword-map s)]]
-          (if (= 0 i)
+          (if (zero? i)
             (reset! f (vector i score))
             (do
               (reset! t @f)
@@ -90,8 +91,8 @@
                 (swap! r + (-> (second @t)
                                (* (second @f))
                                (/ (expt d 2))))))))
-        (let [k (+ 1 (count (common-elements (keys keyword-map) sa)))]
-          (* (/ 1 (* k (+ k 1))) @r)))
+        (let [k (inc (count (common-elements (keys keyword-map) sa)))]
+          (* (/ 1 (* k (inc k))) @r)))
       @r)))
 
 (defn final-score
@@ -119,6 +120,8 @@
 (defn score-sentences
   [sentences keyword-map wordcount titlewords]
   (let [length (count sentences)]
-    (into [] (map-indexed
-              (fn [idx itm] (score itm idx keyword-map wordcount titlewords length))
-              sentences))))
+    (vec
+     (map-indexed
+      (fn [idx itm]
+        (score itm idx keyword-map wordcount titlewords length))
+      sentences))))

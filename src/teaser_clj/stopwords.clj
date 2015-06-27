@@ -1,7 +1,8 @@
 (ns teaser-clj.stopwords
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :refer [resource]]
-            [clojure.string :refer [split]]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :refer [resource]]
+   [clojure.string :refer [split]]))
 
 (declare stopwords)
 

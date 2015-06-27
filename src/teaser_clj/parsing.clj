@@ -1,6 +1,7 @@
 (ns teaser-clj.parsing
-  (:require [opennlp.nlp :refer [make-sentence-detector make-tokenizer]]
-            [clojure.java.io :refer [resource]]))
+  (:require
+   [opennlp.nlp :refer [make-sentence-detector make-tokenizer]]
+   [clojure.java.io :refer [resource]]))
 
 (def get-sentences
   (make-sentence-detector (resource "models/en-sent.bin")))

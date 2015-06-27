@@ -1,11 +1,12 @@
 (ns teaser-clj.core
-  (:require [teaser-clj.html :refer [process-html]]
-            [teaser-clj.parsing :as parsing]
-            [teaser-clj.scoring :refer [score-sentences top-x normalize]]
-            [teaser-clj.stopwords :refer [filter-stopwords-string
-                                          filter-stopwords-wordmap
-                                          filter-symbols]]
-            [clojure.string :as string]))
+  (:require
+   [teaser-clj.html :refer [process-html]]
+   [teaser-clj.parsing :as parsing]
+   [teaser-clj.scoring :refer [score-sentences top-x normalize]]
+   [teaser-clj.stopwords :refer [filter-stopwords-string
+                                 filter-stopwords-wordmap
+                                 filter-symbols]]
+   [clojure.string :as string]))
 
 (defn get-from-indices
   "Returns the values from a data structure corresponding to passed indices."
