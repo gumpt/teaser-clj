@@ -1,5 +1,6 @@
 # summarizer
 
+[![Dependency Status](https://www.versioneye.com/user/projects/559057c231633800240003fb/badge.svg?style=flat)](https://www.versioneye.com/user/projects/559057c231633800240003fb)
 [![Clojars Project](http://clojars.org/teaser-clj/latest-version.svg)](http://clojars.org/teaser-clj)
 
 A Clojure library that's a port of the [Python library](https://github.com/xiaoxu193/PyTeaser) that's a port of the [Scala library](https://github.com/MojoJolo/textteaser).
