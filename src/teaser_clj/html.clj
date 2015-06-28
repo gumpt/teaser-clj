@@ -1,35 +1,25 @@
 (ns teaser-clj.html
   (:require
-   [teaser-clj.parsing :as parsing]
-   [net.cgrand.enlive-html :as html]
+   [boilerpipe-clj.core :as boilerpipe]
    [clojure.java.io :refer [as-url]]
-   [clojure.string :refer [lower-case split]]))
+   [clojure.string :refer [lower-case]]
+   [net.cgrand.enlive-html :as e]))
 
 (defn title-from-html
   "Returns the title from enlive html."
   [html]
-  (first (map lower-case (html/select html [:title html/text-node]))))
-
-(defn fetch-url
-  "Grabs a given URI and returns enlive html of the page."
-  [url]
-  (html/html-resource (as-url url)))
-
-(defn sentences-from-html
-  "Returns the sentences from enlive html."
-  [html]
-  (try
-    (let [chunks (-> html
-                     (html/at [:script] nil)
-                     (html/at [:style] nil)
-                     (html/select [:body html/text-node]))]
-           (mapcat parsing/get-sentences chunks))
-    (catch IllegalArgumentException e)))
+  (let [page (-> html
+                 java.io.StringReader.
+                 e/html-resource)]
+    (first (map lower-case (e/select page [:title e/text-node])))))
 
 (defn process-html
   "Returns a map with the title, words, and sentences
   from a given url."
   [url]
-  (let [content (fetch-url url)]
-    {:title (title-from-html content)
-     :sentences (sentences-from-html content)}))
+  (let [page  (slurp url)
+        title (title-from-html page)]
+    {:title title
+     :sentences (boilerpipe/get-text
+                 page
+                 boilerpipe-clj.extractors/article-sentence-extractor)}))
