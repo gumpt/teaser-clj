@@ -11,13 +11,13 @@ A Clojure library that's a port of the [Python library](https://github.com/xiaox
 ### Leiningen
 
 ```
-[teaser-clj "0.5.0"]
+[teaser-clj "0.5.1"]
 ```
 
 ### Gradle
 
 ```
-compile "teaser-clj:teaser-clj:0.5.0"
+compile "teaser-clj:teaser-clj:0.5.1"
 ```
 
 ### Maven
@@ -26,7 +26,7 @@ compile "teaser-clj:teaser-clj:0.5.0"
 <dependency>
   <groupId>teaser-clj</groupId>
   <artifactId>teaser-clj</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
 </dependency>
 ```
 
