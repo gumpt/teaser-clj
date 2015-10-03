@@ -33,7 +33,8 @@
 (defn summarize-url
   "Returns a five-sentence (max) summary of the given url."
   [url]
-  (let [{:keys [title sentences]}  (process-html url)]
+  (let [{:keys [title text-blob]}  (process-html url)
+        sentences (parsing/get-sentences text-blob)]
     (summarize title sentences)))
 
 (defn summarize-text

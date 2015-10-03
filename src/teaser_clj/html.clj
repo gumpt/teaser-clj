@@ -20,6 +20,6 @@
   (let [page  (slurp url)
         title (title-from-html page)]
     {:title title
-     :sentences (boilerpipe/get-text
+     :text-blob (boilerpipe/get-text
                  page
                  boilerpipe-clj.extractors/article-sentence-extractor)}))
