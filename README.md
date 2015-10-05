@@ -11,7 +11,7 @@ A Clojure library that's a port of the [Python library](https://github.com/xiaox
 ### Leiningen
 
 ```
-[teaser-clj "0.5.2"]
+[teaser-clj "0.5.4"]
 ```
 
 ### In code

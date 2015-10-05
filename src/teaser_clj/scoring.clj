@@ -74,26 +74,27 @@
 
 (defn dbs
   [sentence keyword-map]
-  (let [f (atom [])
-        t (atom [])
-        r (atom 0)]
-    (if-let [sa (not-empty (split-sentence sentence))]
-      (do
-        (doseq [i (range (count sa))
-                :let [s (nth sa i)
-                      score (get-keyword-score keyword-map s)]]
-          (if (zero? i)
-            (reset! f (vector i score))
-            (do
-              (reset! t @f)
-              (reset! f [i score])
-              (let [d (- (first @t) (first @f))]
-                (swap! r + (-> (second @t)
-                               (* (second @f))
-                               (/ (expt d 2))))))))
-        (let [k (inc (count (common-elements (keys keyword-map) sa)))]
-          (* (/ 1 (* k (inc k))) @r)))
-      @r)))
+  (let [sa (split-sentence sentence)]
+    (if (seq sa)
+      (loop [f []
+             t []
+             r 0
+             i 0]
+        (if (> (count sa) i)
+          (let [s (nth sa i)
+                score (get-keyword-score keyword-map s)]
+            (if (zero? i)
+              (recur [i score] [] 0 (inc i))
+              (let [d (- (first f) i)]
+                (recur [i score]
+                       f
+                       (+ r (-> (second f)
+                                (* score)
+                                (/ (expt d 2))))
+                       (inc i)))))
+          (let [k (inc (count (common-elements (keys keyword-map) sa)))]
+            (* (/ 1 (* k (inc k))) r))))
+      0)))
 
 (defn final-score
   [ts fq ls ps]
